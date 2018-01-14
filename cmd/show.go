@@ -15,6 +15,7 @@ var showCmd = &cobra.Command{
 	Use:   "show",
 	Short: "show page contents",
 	Long:  ``,
+	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		defaultProjectName := viper.GetString("project")
 		defaultServerName := viper.GetString("server")
