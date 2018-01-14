@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -29,9 +30,11 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.sbox.yaml)")
+	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.config/sbox/.sbox.yaml)")
 	RootCmd.PersistentFlags().StringVar(&projectName, "project", "", "target project")
+	viper.BindPFlag("project", RootCmd.PersistentFlags().Lookup("project"))
 	RootCmd.PersistentFlags().StringVar(&serverName, "server", "http://scrapbox.io", "target server")
+	viper.BindPFlag("server", RootCmd.PersistentFlags().Lookup("server"))
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -40,9 +43,10 @@ func initConfig() {
 		viper.SetConfigFile(cfgFile)
 	}
 
-	viper.SetConfigName(".sbox")           // name of config file (without extension)
-	viper.AddConfigPath(os.Getenv("HOME")) // adding home directory as first search path
-	viper.AutomaticEnv()                   // read in environment variables that match
+	viper.SetConfigName(".sbox") // name of config file (without extension)
+	configPath := filepath.Join(os.Getenv("HOME"), ".config", "sbox")
+	viper.AddConfigPath(configPath) // adding home directory as first search path
+	viper.AutomaticEnv()            // read in environment variables that match
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
