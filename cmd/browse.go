@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"net/url"
+	"strings"
 
 	"github.com/mpppk/sbox/utl"
 	"github.com/skratchdot/open-golang/open"
@@ -19,10 +20,19 @@ var browseCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		defaultProjectName := viper.GetString("project")
 		defaultServerName := viper.GetString("server")
-		targetPage := utl.ParsePagePath(args[0], defaultProjectName, defaultServerName)
-		values := url.Values{}
-		values.Add("body", contents)
-		pageURLWithQuery := fmt.Sprintf("%s?%s", targetPage.String(), values.Encode())
+		tempTrimmedTitle := strings.Replace(args[0], "\r", "", -1)
+		trimmedTitle := strings.Replace(tempTrimmedTitle, "\n", "", -1)
+		escapedTitle := url.PathEscape(trimmedTitle)
+		targetPage := utl.ParsePagePath(escapedTitle, defaultProjectName, defaultServerName)
+		query := ""
+		if contents != "" {
+			values := url.Values{}
+			values.Add("body", contents)
+			query = "?" + values.Encode()
+		}
+		pageURLWithQuery := targetPage.String() + query
+		fmt.Println("escaped title")
+		fmt.Println(pageURLWithQuery)
 		open.Run(pageURLWithQuery)
 	},
 }
