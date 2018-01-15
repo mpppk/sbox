@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"net/url"
 	"strings"
 
@@ -31,8 +30,6 @@ var browseCmd = &cobra.Command{
 			query = "?" + values.Encode()
 		}
 		pageURLWithQuery := targetPage.String() + query
-		fmt.Println("escaped title")
-		fmt.Println(pageURLWithQuery)
 		open.Run(pageURLWithQuery)
 	},
 }
