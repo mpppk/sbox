@@ -10,6 +10,8 @@ import (
 	"github.com/spf13/viper"
 )
 
+var limit int
+
 var listPagesCmd = &cobra.Command{
 	Use:   "pages",
 	Short: "list pages",
@@ -20,7 +22,7 @@ var listPagesCmd = &cobra.Command{
 		targetPage := utl.ParsePagePath("dummy", defaultProjectName, defaultServerName)
 		client := scrapbox.NewClient(nil)
 		pages, _, err := client.Pages.ListByProject(context.Background(), targetPage.Project,
-			&scrapbox.PageListByProjectOptions{Limit: 5})
+			&scrapbox.PageListByProjectOptions{Limit: limit})
 
 		if err != nil {
 			fmt.Println("failed to fetch pages from " + targetPage.String())
@@ -29,10 +31,10 @@ var listPagesCmd = &cobra.Command{
 		for _, page := range pages {
 			fmt.Println(page.Title)
 		}
-
 	},
 }
 
 func init() {
+	listPagesCmd.PersistentFlags().IntVar(&limit, "limit", 100, "pages num limit")
 	listCmd.AddCommand(listPagesCmd)
 }
