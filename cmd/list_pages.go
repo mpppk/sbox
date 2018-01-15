@@ -14,11 +14,10 @@ var listPagesCmd = &cobra.Command{
 	Use:   "pages",
 	Short: "list pages",
 	Long:  ``,
-	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		defaultProjectName := viper.GetString("project")
 		defaultServerName := viper.GetString("server")
-		targetPage := utl.ParsePagePath(args[0], defaultProjectName, defaultServerName)
+		targetPage := utl.ParsePagePath("dummy", defaultProjectName, defaultServerName)
 		client := scrapbox.NewClient(nil)
 		pages, _, err := client.Pages.ListByProject(context.Background(), targetPage.Project,
 			&scrapbox.PageListByProjectOptions{Limit: 5})
