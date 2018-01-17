@@ -134,6 +134,22 @@ func TestParseTrimmedLinkText(t *testing.T) {
 			willBeError:   false,
 		},
 		{
+			text:          "/project/page",
+			server:        "https://scrapbox.io",
+			project:       "niboshi",
+			expectedURL:   "https://scrapbox.io/project/page",
+			expectedTitle: "/project/page",
+			willBeError:   false,
+		},
+		{
+			text:          "/project",
+			server:        "https://scrapbox.io",
+			project:       "niboshi",
+			expectedURL:   "https://scrapbox.io/project",
+			expectedTitle: "/project",
+			willBeError:   false,
+		},
+		{
 			text:          "http://example.com 日本語　の　テスト",
 			server:        "https://scrapbox.io",
 			project:       "niboshi",

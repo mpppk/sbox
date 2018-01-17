@@ -35,6 +35,17 @@ func parseTrimmedLinkText(server, project, trimmedText string) (string, string, 
 		return urlAndTexts[lastIndex], linkText, nil
 	}
 
+	if strings.HasPrefix(trimmedText, "/") {
+		texts := strings.Split(trimmedText, "/")[1:]
+		if len(texts) > 1 {
+			escapedText := url.PathEscape(strings.Join(texts[1:], "/"))
+			linkUrl := fmt.Sprintf("%s/%s/%s", server, texts[0], escapedText)
+			return linkUrl, trimmedText, nil
+		}
+		linkUrl := fmt.Sprintf("%s/%s", server, texts[0])
+		return linkUrl, trimmedText, nil
+	}
+
 	escapedText := url.PathEscape(trimmedText)
 	linkUrl := fmt.Sprintf("%s/%s/%s", server, project, escapedText)
 	return linkUrl, trimmedText, nil
