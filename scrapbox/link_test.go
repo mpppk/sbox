@@ -230,7 +230,7 @@ func TestNewSBLink(t *testing.T) {
 		link, err := NewSBLink(c.text, c.server, c.project)
 
 		if err != nil && !c.willBeError {
-			t.Fatalf("Error occured when SBLink creating: %s, test case: %s", err, c.description)
+			t.Fatalf("Error occured when Link creating: %s, test case: %s", err, c.description)
 		}
 
 		if c.willBeError {
@@ -249,7 +249,7 @@ func TestNewSBLink(t *testing.T) {
 		}
 
 		if link.Title != c.expectedTitle {
-			t.Fatalf("Error occured when SBLink creating: %s", err)
+			t.Fatalf("Error occured when Link creating: %s", err)
 		}
 	}
 }

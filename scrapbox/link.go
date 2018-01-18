@@ -1,25 +1,24 @@
 package scrapbox
 
 import (
-	"errors"
 	"fmt"
 	"net/url"
 	"strings"
 )
 
-type SBLink struct {
-	SBNode
+type Link struct {
+	Node
 	Title string
 	URL   string
 }
 
-func NewSBLink(text, server, project string) (*SBLink, error) {
+func NewSBLink(text, server, project string) (*Link, error) {
 	trimmedText, err := trimBrackets(text)
 	if err != nil {
 		return nil, err
 	}
 	linkUrl, linkText, err := parseTrimmedLinkText(server, project, trimmedText)
-	return &SBLink{Title: linkText, URL: linkUrl}, nil
+	return &Link{Title: linkText, URL: linkUrl}, nil
 }
 
 func parseTrimmedLinkText(server, project, trimmedText string) (string, string, error) {
@@ -49,20 +48,4 @@ func parseTrimmedLinkText(server, project, trimmedText string) (string, string, 
 	escapedText := url.PathEscape(trimmedText)
 	linkUrl := fmt.Sprintf("%s/%s/%s", server, project, escapedText)
 	return linkUrl, trimmedText, nil
-}
-
-func trimBrackets(text string) (string, error) {
-	if !hasBrackets(text) {
-		return "", errors.New("invalid text")
-	}
-
-	textList := strings.Split(text, "")
-	return strings.Join(textList[1:len(textList)-1], ""), nil
-}
-
-func hasBrackets(text string) bool {
-	textList := strings.Split(text, "")
-	return len(textList) > 0 &&
-		textList[0] == "[" &&
-		textList[len(textList)-1] == "]"
 }
