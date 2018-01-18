@@ -11,6 +11,11 @@ type Node interface {
 	IsValid(text string) bool
 }
 
+type Text struct {
+	Node
+	Text string
+}
+
 func trimBrackets(text string) (string, error) {
 	if !hasBrackets(text) {
 		return "", errors.New("invalid text")
