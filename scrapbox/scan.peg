@@ -1,0 +1,36 @@
+package scrapbox
+
+type Parser Peg {
+    s Scan         // parserが自動生成するフィールド変数と区別するために
+                   //   敢えて埋め込みを行っていない。
+}
+
+root <- expression EOT /
+        expression <.+> {p.s.Err(begin)} EOT /
+        <.+> {p.s.Err(begin)} EOT
+
+EOT <- !.
+
+expression <- literal+
+
+literal <- bracketText /
+<[^\[]+> {
+    p.s.Push(&PlainText{Text: text})
+} /
+<[^\]]+> {
+    p.s.Push(&PlainText{Text: text})
+}
+
+bracketText <- '[' innerDecoratedText ']' /
+<'[' plainText> {
+    p.s.Push(&PlainText{Text: text})
+}
+
+innerDecoratedText <- '* ' <plainText> {
+    p.s.Push(&BoldText{Text: text})
+} /
+<plainText> {
+    p.s.PushLinkFromRawText(text)
+}
+
+plainText <- [^\]\[]+

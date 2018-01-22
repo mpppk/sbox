@@ -6,7 +6,9 @@ import (
 	"strings"
 )
 
-type BoldText Text
+type BoldText struct {
+	Text string
+}
 
 func NewBoldText(rawText string) (*BoldText, error) {
 	trimmedBoldRawText, err := trimBoldRawText(rawText)

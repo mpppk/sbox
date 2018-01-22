@@ -6,19 +6,19 @@ import (
 	"strings"
 )
 
-type Node interface {
-	fmt.Stringer
-	IsValid(text string) bool
+type Text fmt.Stringer
+
+type PlainText struct {
+	Text string
 }
 
-type Text struct {
-	Node
-	Text string
+func (p *PlainText) String() string {
+	return p.Text
 }
 
 func trimBrackets(text string) (string, error) {
 	if !hasBrackets(text) {
-		return "", errors.New("invalid text")
+		return "", errors.New("invalid texts")
 	}
 
 	textList := strings.Split(text, "")

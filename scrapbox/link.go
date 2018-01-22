@@ -7,9 +7,19 @@ import (
 )
 
 type Link struct {
-	Node
-	Title string
-	URL   string
+	OriginalText string
+	Server       string
+	Project      string
+	Title        string
+	URL          string
+}
+
+func (l *Link) String() string {
+	if l.OriginalText != "" {
+		return l.OriginalText
+	}
+
+	return fmt.Sprintf("[%s %s]", l.Title, l.URL) // TODO related url
 }
 
 func NewSBLink(text, server, project string) (*Link, error) {
@@ -18,7 +28,7 @@ func NewSBLink(text, server, project string) (*Link, error) {
 		return nil, err
 	}
 	linkUrl, linkText, err := parseTrimmedLinkText(server, project, trimmedText)
-	return &Link{Title: linkText, URL: linkUrl}, nil
+	return &Link{OriginalText: text, Title: linkText, URL: linkUrl, Server: server, Project: project}, nil
 }
 
 func parseTrimmedLinkText(server, project, trimmedText string) (string, string, error) {
