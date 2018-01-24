@@ -27,11 +27,11 @@ func (s *Scan) PushLinkFromRawText(rawText string) {
 	s.Push(link)
 }
 
-func Parse(s string) ([]Text, error) {
+func Parse(s, server, project string) ([]Text, error) {
 	parser := &Parser{Buffer: s} // 解析対象文字の設定
 	parser.Init()                // parser初期化
-	parser.s.project = "niboshi"
-	parser.s.server = "https://scrapbox.io"
+	parser.s.project = project
+	parser.s.server = server
 
 	err := parser.Parse() // 解析
 	if err != nil {
