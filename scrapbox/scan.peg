@@ -27,7 +27,7 @@ bracketText <- '[' innerDecoratedText ']' /
 }
 
 innerDecoratedText <- '* ' <plainText> {
-    p.s.Push(&BoldText{Text: text})
+    p.s.Push(&BoldText{Text: text, Symbol: '*'})
 } /
 <plainText> {
     p.s.PushLinkFromRawText(text)

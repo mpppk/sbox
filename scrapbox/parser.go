@@ -8,14 +8,14 @@ import (
 type Scan struct {
 	server  string
 	project string
-	texts   []Text
+	texts   []TextStringer
 }
 
 func (s *Scan) Err(e int) {
 	fmt.Printf("\n!!error!!%d\n", e)
 }
 
-func (s *Scan) Push(text Text) {
+func (s *Scan) Push(text TextStringer) {
 	s.texts = append(s.texts, text)
 }
 
@@ -27,7 +27,7 @@ func (s *Scan) PushLinkFromRawText(rawText string) {
 	s.Push(link)
 }
 
-func Parse(s, server, project string) ([]Text, error) {
+func Parse(s, server, project string) ([]TextStringer, error) {
 	parser := &Parser{Buffer: s} // 解析対象文字の設定
 	parser.Init()                // parser初期化
 	parser.s.project = project

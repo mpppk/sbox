@@ -3,43 +3,23 @@ package scrapbox
 import (
 	"errors"
 	"fmt"
-	"strings"
 )
 
-type BoldText struct {
-	Text string
+type decoratedText struct {
+	Symbol rune
+	Text   string
 }
 
+type BoldText decoratedText
+
 func NewBoldText(rawText string) (*BoldText, error) {
-	trimmedBoldRawText, err := trimBoldRawText(rawText)
+	trimmedBoldRawText, err := trimDecoratedRawText(rawText, '*')
 	if err != nil {
 		return nil, errors.New("invalid text for bold text")
 	}
-	return &BoldText{Text: trimmedBoldRawText}, nil
+	return &BoldText{Text: trimmedBoldRawText, Symbol: '*'}, nil
 }
 
 func (b *BoldText) String() string {
-	return fmt.Sprintf("[* %s]", b.Text)
-}
-
-func isValidBoldRawText(rawText string) bool {
-	trimmedRawText, err := trimBrackets(rawText)
-	if err != nil {
-		return false
-	}
-	trimmedRawTextList := strings.Split(trimmedRawText, "")
-	return len(trimmedRawTextList) > 0 &&
-		trimmedRawTextList[0] == "*" &&
-		trimmedRawTextList[1] == " "
-}
-
-func trimBoldRawText(rawText string) (string, error) {
-	if !isValidBoldRawText(rawText) {
-		return "", errors.New("invalid text for bold text")
-	}
-
-	trimmedRawText, _ := trimBrackets(rawText) // error is already checked
-	return strings.Replace(
-		strings.Replace(trimmedRawText, "*", "", 1),
-		" ", "", 1), nil
+	return fmt.Sprintf("[%c %s]", b.Symbol, b.Text)
 }

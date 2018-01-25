@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-type Text fmt.Stringer
+type TextStringer fmt.Stringer
 
 type PlainText struct {
 	Text string
@@ -30,4 +30,26 @@ func hasBrackets(text string) bool {
 	return len(textList) > 0 &&
 		textList[0] == "[" &&
 		textList[len(textList)-1] == "]"
+}
+
+func isValidDecoratedRawText(rawText string, decoratedSymbol rune) bool {
+	trimmedRawText, err := trimBrackets(rawText)
+	if err != nil {
+		return false
+	}
+	trimmedRawTextList := []rune(trimmedRawText)
+	return len(trimmedRawTextList) > 0 &&
+		trimmedRawTextList[0] == decoratedSymbol &&
+		trimmedRawTextList[1] == ' '
+}
+
+func trimDecoratedRawText(rawText string, decoratedSymbol rune) (string, error) {
+	if !isValidDecoratedRawText(rawText, decoratedSymbol) {
+		return "", errors.New("invalid text for bold text")
+	}
+
+	trimmedRawText, _ := trimBrackets(rawText) // error is already checked
+	return strings.Replace(
+		strings.Replace(trimmedRawText, string(decoratedSymbol), "", 1),
+		" ", "", 1), nil
 }

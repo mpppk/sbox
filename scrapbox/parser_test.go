@@ -116,7 +116,6 @@ func TestParse(t *testing.T) {
 
 	cases := []struct {
 		texts    string
-		expected []Text
 		textType string
 	}{
 		{
