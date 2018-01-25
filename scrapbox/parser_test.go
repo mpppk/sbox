@@ -122,7 +122,14 @@ func TestParse(t *testing.T) {
 			texts: "[* Bold]",
 		},
 		{
-			texts: "[https://sample.com sample link]and[* Bold]Text",
+			texts: "[/ Italic]",
+		},
+		{
+			texts: "[- Strike Through]",
+		},
+		{
+			texts: "[https://sample.com sample link]and[* Bold]Text " +
+				"and[/ Italic]text and [- Strike]text",
 		},
 	}
 
