@@ -115,11 +115,15 @@ func TestParse(t *testing.T) {
 	}
 
 	cases := []struct {
-		texts    string
-		textType string
+		texts         string
+		textType      string
+		expectedTexts []TextStringer
 	}{
 		{
 			texts: "[* Bold]",
+			expectedTexts: []TextStringer{
+				&BoldText{Text: "Bold", Symbol: '*'},
+			},
 		},
 		{
 			texts: "[/ Italic]",
@@ -128,7 +132,7 @@ func TestParse(t *testing.T) {
 			texts: "[- Strike Through]",
 		},
 		{
-			texts: "[https://sample.com sample link]and[* Bold]Text " +
+			texts: "[https://sample.com sample link]and[* Bold]Text\n " +
 				"and[/ Italic]text and [- Strike]text",
 		},
 	}

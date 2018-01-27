@@ -40,7 +40,7 @@ func TestNewBoldText(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		boldText, err := NewBoldText(c.rawText)
+		boldText, err := NewBoldTextFromBracketsText(c.rawText)
 		if err != nil && !c.willBeError {
 			t.Fatalf("Unexpected error occured in NewBoldText: %s", err)
 		}

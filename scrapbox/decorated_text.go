@@ -19,7 +19,11 @@ type BoldText decoratedText
 type ItalicText decoratedText
 type StrikeThroughText decoratedText
 
-func NewBoldText(rawText string) (*BoldText, error) {
+func NewBoldText(text string) *BoldText {
+	return (*BoldText)(&BoldText{Text: text, Symbol: '*'})
+}
+
+func NewBoldTextFromBracketsText(rawText string) (*BoldText, error) {
 	decoratedText, err := newDecoratedText(rawText, '*', "bold")
 	return (*BoldText)(decoratedText), err
 }
@@ -28,7 +32,11 @@ func (t *BoldText) String() string {
 	return fmt.Sprintf("[%c %s]", t.Symbol, t.Text)
 }
 
-func NewItalicText(rawText string) (*ItalicText, error) {
+func NewItalicText(text string) *BoldText {
+	return (*BoldText)(&BoldText{Text: text, Symbol: '/'})
+}
+
+func NewItalicTextFromBracketsText(rawText string) (*ItalicText, error) {
 	decoratedText, err := newDecoratedText(rawText, '/', "italic")
 	return (*ItalicText)(decoratedText), err
 }
@@ -37,7 +45,11 @@ func (t *ItalicText) String() string {
 	return fmt.Sprintf("[%c %s]", t.Symbol, t.Text)
 }
 
-func NewStrikeThroughText(rawText string) (*StrikeThroughText, error) {
+func NewStrikeThroughText(text string) *BoldText {
+	return (*BoldText)(&BoldText{Text: text, Symbol: '-'})
+}
+
+func NewStrikeThroughTextFromBracketsText(rawText string) (*StrikeThroughText, error) {
 	decoratedText, err := newDecoratedText(rawText, '-', "strike through")
 	return (*StrikeThroughText)(decoratedText), err
 }
