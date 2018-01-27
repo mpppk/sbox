@@ -114,6 +114,8 @@ func TestParse(t *testing.T) {
 
 	}
 
+	sampleLink, _ := NewSBLink("[https://sample.com sample link]", server, project)
+
 	cases := []struct {
 		texts         string
 		textType      string
@@ -122,18 +124,36 @@ func TestParse(t *testing.T) {
 		{
 			texts: "[* Bold]",
 			expectedTexts: []TextStringer{
-				&BoldText{Text: "Bold", Symbol: '*'},
+				NewBoldText("Bold"),
 			},
 		},
 		{
 			texts: "[/ Italic]",
+			expectedTexts: []TextStringer{
+				NewItalicText("Italic"),
+			},
 		},
 		{
 			texts: "[- Strike Through]",
+			expectedTexts: []TextStringer{
+				NewStrikeThroughText("Strike Through"),
+			},
 		},
 		{
 			texts: "[https://sample.com sample link]and[* Bold]Text\n " +
 				"and[/ Italic]text and [- Strike]text",
+			expectedTexts: []TextStringer{
+				sampleLink,
+				&PlainText{Text: "and"},
+				NewBoldText("Bold"),
+				&PlainText{Text: "Text"},
+				NewNewLineText(),
+				&PlainText{Text: "and"},
+				NewItalicText("Italic"),
+				&PlainText{Text: "text and "},
+				NewStrikeThroughText("Strike"),
+				&PlainText{Text: "text"},
+			},
 		},
 	}
 
@@ -144,9 +164,17 @@ func TestParse(t *testing.T) {
 		}
 
 		concatenateText := ""
-		for _, text := range parsedTexts {
+		for i, text := range parsedTexts {
 			fmt.Printf("%#v\n", text)
 			concatenateText += text.String()
+			expectedText := c.expectedTexts[i]
+
+			expectedType := reflect.TypeOf(expectedText)
+			actualType := reflect.TypeOf(text)
+			if expectedType != actualType {
+				t.Fatalf("The type of the %dth struct should be %s, but acutually %s",
+					i, expectedText, actualType)
+			}
 		}
 
 		if concatenateText != c.texts {

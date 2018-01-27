@@ -15,9 +15,18 @@ func (d *decoratedText) String() string {
 	return fmt.Sprintf("[%c %s]", d.Symbol, d.Text)
 }
 
+type NewLineText struct{}
 type BoldText decoratedText
 type ItalicText decoratedText
 type StrikeThroughText decoratedText
+
+func (n *NewLineText) String() string {
+	return "\n"
+}
+
+func NewNewLineText() *NewLineText {
+	return &NewLineText{}
+}
 
 func NewBoldText(text string) *BoldText {
 	return (*BoldText)(&BoldText{Text: text, Symbol: '*'})

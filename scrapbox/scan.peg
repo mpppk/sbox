@@ -14,11 +14,14 @@ EOT <- !.
 expression <- literal+
 
 literal <- bracketText /
-<[^\[]+> {
+<[^\[\n]+> {
     p.s.Push(&PlainText{Text: text})
 } /
-<[^\]]+> {
+<[^\]\n]+> {
     p.s.Push(&PlainText{Text: text})
+} /
+'\n' {
+    p.s.Push(NewNewLineText())
 }
 
 bracketText <- '[' innerDecoratedText ']' /
