@@ -22,6 +22,11 @@ func (l *Link) String() string {
 	return fmt.Sprintf("[%s %s]", l.Title, l.URL) // TODO related url
 }
 
+func (l *Link) GetText() string {
+	trimmedText, _ := trimBrackets(l.String())
+	return trimmedText
+}
+
 func NewSBLink(text, server, project string) (*Link, error) {
 	trimmedText, err := trimBrackets(text)
 	if err != nil {

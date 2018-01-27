@@ -6,6 +6,11 @@ import (
 	"github.com/pkg/errors"
 )
 
+type TextStringer interface {
+	fmt.Stringer
+	GetText() string
+}
+
 type decoratedText struct {
 	Symbol rune
 	Text   string
@@ -20,7 +25,23 @@ type BoldText decoratedText
 type ItalicText decoratedText
 type StrikeThroughText decoratedText
 
+type PlainText struct {
+	Text string
+}
+
+func (p *PlainText) String() string {
+	return p.Text
+}
+
+func (p *PlainText) GetText() string {
+	return p.Text
+}
+
 func (n *NewLineText) String() string {
+	return "\n"
+}
+
+func (n *NewLineText) GetText() string {
 	return "\n"
 }
 
@@ -41,6 +62,10 @@ func (t *BoldText) String() string {
 	return fmt.Sprintf("[%c %s]", t.Symbol, t.Text)
 }
 
+func (t *BoldText) GetText() string {
+	return t.Text
+}
+
 func NewItalicText(text string) *BoldText {
 	return (*BoldText)(&BoldText{Text: text, Symbol: '/'})
 }
@@ -54,6 +79,10 @@ func (t *ItalicText) String() string {
 	return fmt.Sprintf("[%c %s]", t.Symbol, t.Text)
 }
 
+func (t *ItalicText) GetText() string {
+	return t.Text
+}
+
 func NewStrikeThroughText(text string) *BoldText {
 	return (*BoldText)(&BoldText{Text: text, Symbol: '-'})
 }
@@ -65,6 +94,10 @@ func NewStrikeThroughTextFromBracketsText(rawText string) (*StrikeThroughText, e
 
 func (t *StrikeThroughText) String() string {
 	return fmt.Sprintf("[%c %s]", t.Symbol, t.Text)
+}
+
+func (t *StrikeThroughText) GetText() string {
+	return t.Text
 }
 
 func newDecoratedText(rawText string, symbol rune, decorateName string) (*decoratedText, error) {

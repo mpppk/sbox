@@ -117,30 +117,30 @@ func TestParse(t *testing.T) {
 	sampleLink, _ := NewSBLink("[https://sample.com sample link]", server, project)
 
 	cases := []struct {
-		texts         string
+		text          string
 		textType      string
 		expectedTexts []TextStringer
 	}{
 		{
-			texts: "[* Bold]",
+			text: "[* Bold]",
 			expectedTexts: []TextStringer{
 				NewBoldText("Bold"),
 			},
 		},
 		{
-			texts: "[/ Italic]",
+			text: "[/ Italic]",
 			expectedTexts: []TextStringer{
 				NewItalicText("Italic"),
 			},
 		},
 		{
-			texts: "[- Strike Through]",
+			text: "[- Strike Through]",
 			expectedTexts: []TextStringer{
 				NewStrikeThroughText("Strike Through"),
 			},
 		},
 		{
-			texts: "[https://sample.com sample link]and[* Bold]Text\n " +
+			text: "[https://sample.com sample link]and[* Bold]Text\n " +
 				"and[/ Italic]text and [- Strike]text",
 			expectedTexts: []TextStringer{
 				sampleLink,
@@ -148,7 +148,7 @@ func TestParse(t *testing.T) {
 				NewBoldText("Bold"),
 				&PlainText{Text: "Text"},
 				NewNewLineText(),
-				&PlainText{Text: "and"},
+				&PlainText{Text: " and"},
 				NewItalicText("Italic"),
 				&PlainText{Text: "text and "},
 				NewStrikeThroughText("Strike"),
@@ -158,7 +158,7 @@ func TestParse(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		parsedTexts, err := Parse(c.texts, server, project)
+		parsedTexts, err := Parse(c.text, server, project)
 		if err != nil {
 			t.Fatalf("Unexpected error occured in Parse: %s", err)
 		}
@@ -175,12 +175,26 @@ func TestParse(t *testing.T) {
 				t.Fatalf("The type of the %dth struct should be %s, but acutually %s",
 					i, expectedText, actualType)
 			}
+
+			if expectedText.GetText() != text.GetText() {
+				fmt.Println(text)
+				fmt.Println(expectedText)
+				t.Fatalf("If raw text %q is given, text should be %q, but acutually %q",
+					text, expectedText.GetText(), text.GetText())
+			}
+
+			if expectedText.String() != text.String() {
+				fmt.Println(text)
+				fmt.Println(expectedText)
+				t.Fatalf("If raw text %q is given, text string should be %s, but acutually %s",
+					text, expectedText.String(), text.String())
+			}
 		}
 
-		if concatenateText != c.texts {
+		if concatenateText != c.text {
 			t.Fatalf("If structs that returned from Parse() is joined as string, "+
 				"it is expected to be same as argument(%q), but actually it got %q",
-				c.texts, concatenateText)
+				c.text, concatenateText)
 		}
 	}
 }

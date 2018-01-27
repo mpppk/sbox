@@ -2,23 +2,12 @@ package scrapbox
 
 import (
 	"errors"
-	"fmt"
 	"strings"
 )
 
-type TextStringer fmt.Stringer
-
-type PlainText struct {
-	Text string
-}
-
-func (p *PlainText) String() string {
-	return p.Text
-}
-
 func trimBrackets(text string) (string, error) {
 	if !hasBrackets(text) {
-		return "", errors.New("invalid texts")
+		return "", errors.New("invalid text")
 	}
 
 	textList := strings.Split(text, "")

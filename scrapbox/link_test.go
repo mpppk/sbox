@@ -102,19 +102,19 @@ func TestParseTrimmedLinkText(t *testing.T) {
 			willBeError:   false,
 		},
 		{
-			text:          "Example! Other texts!! http://example.com",
+			text:          "Example! Other text!! http://example.com",
 			server:        "https://scrapbox.io",
 			project:       "niboshi",
 			expectedURL:   "http://example.com",
-			expectedTitle: "Example! Other texts!!",
+			expectedTitle: "Example! Other text!!",
 			willBeError:   false,
 		},
 		{
-			text:          "http://example.com Example! Other texts!!",
+			text:          "http://example.com Example! Other text!!",
 			server:        "https://scrapbox.io",
 			project:       "niboshi",
 			expectedURL:   "http://example.com",
-			expectedTitle: "Example! Other texts!!",
+			expectedTitle: "Example! Other text!!",
 			willBeError:   false,
 		},
 		{
@@ -126,11 +126,11 @@ func TestParseTrimmedLinkText(t *testing.T) {
 			willBeError:   false,
 		},
 		{
-			text:          "Example other texts",
+			text:          "Example other text",
 			server:        "https://scrapbox.io",
 			project:       "niboshi",
 			expectedURL:   "https://scrapbox.io/niboshi/Example%20other%20texts",
-			expectedTitle: "Example other texts",
+			expectedTitle: "Example other text",
 			willBeError:   false,
 		},
 		{
