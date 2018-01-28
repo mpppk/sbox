@@ -14,6 +14,10 @@ EOT <- !.
 expression <- literal+
 
 literal <- bracketText /
+<' '+ plainTextLine> {
+    b, _ := NewBulletPointText(text)
+    p.s.Push(b)
+} /
 <[^\[\n]+> {
     p.s.Push(&PlainText{Text: text})
 } /

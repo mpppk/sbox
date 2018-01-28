@@ -21,9 +21,34 @@ func (d *decoratedText) String() string {
 }
 
 type NewLineText struct{}
+type BulletPointText struct {
+	Text  string
+	Level int
+}
 type BoldText decoratedText
 type ItalicText decoratedText
 type StrikeThroughText decoratedText
+
+func (t *BulletPointText) String() string {
+	return " " + t.Text
+}
+
+func (t *BulletPointText) GetText() string {
+	return t.Text
+}
+
+func NewBulletPointText(rawText string) (*BulletPointText, error) {
+	for i, r := range rawText {
+		if r == ' ' {
+			continue
+		}
+		if i == 0 {
+			return nil, errors.New("invalid raw text for bullet point")
+		}
+		return &BulletPointText{Text: string([]rune(rawText)[i:]), Level: i}, nil
+	}
+	return nil, errors.New("invalid raw text for bullet point")
+}
 
 type PlainText struct {
 	Text string

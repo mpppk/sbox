@@ -140,19 +140,21 @@ func TestParse(t *testing.T) {
 			},
 		},
 		{
-			text: "[https://sample.com sample link]and[* Bold]Text\n " +
-				"and[/ Italic]text and [- Strike]text",
+			text: "[https://sample.com sample link]and[* Bold]Text\n" +
+				"and[/ Italic]text and [- Strike]text\n bullet point",
 			expectedTexts: []TextStringer{
 				sampleLink,
 				&PlainText{Text: "and"},
 				NewBoldText("Bold"),
 				&PlainText{Text: "Text"},
 				NewNewLineText(),
-				&PlainText{Text: " and"},
+				&PlainText{Text: "and"},
 				NewItalicText("Italic"),
 				&PlainText{Text: "text and "},
 				NewStrikeThroughText("Strike"),
 				&PlainText{Text: "text"},
+				NewNewLineText(),
+				&BulletPointText{Text: "bullet point"},
 			},
 		},
 	}
