@@ -1,0 +1,11 @@
+{
+package scrapbox
+}
+
+Input <- expr:Expr EOF {
+    return expr, nil
+}
+
+Expr <- .*
+
+EOF <- !.

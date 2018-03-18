@@ -27,7 +27,7 @@ func (s *Scan) PushLinkFromRawText(rawText string) {
 	s.Push(link)
 }
 
-func Parse(s, server, project string) ([]TextStringer, error) {
+func Parse2(s, server, project string) ([]TextStringer, error) {
 	parser := &Parser{Buffer: s} // 解析対象文字の設定
 	parser.Init()                // parser初期化
 	parser.s.project = project
