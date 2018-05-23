@@ -9,9 +9,6 @@ sbox is command line tool for [Scrapbox](https://scrapbox.io)
 $ go get github.com/mpppk/sbox
 ```
 
-### binary
-Download from [releases page](https://github.com/mpppk/sbox/releases)
-
 ## Setup
 
 ```
